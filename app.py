@@ -68,6 +68,16 @@ def login():
 
     return render_template("login.html")
 
+@app.route("/dashboard")
+def dashboard():
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    return render_template(
+        "dashboard.html",
+        username=session["username"]
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)
