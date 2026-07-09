@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Task</title>
+</head>
+
+<body>
+    <h2>Add New Task</h2>
+    <form method="POST">
+        <label>Title</label>
+        <br>
+        <input type="text" name="title" required>
+        <br><br>
+        <label>Description</label>
+        <br>
+        <textarea name="description"></textarea>
+        <br><br>
+        <label>Due Date</label>
+        <br>
+        <input type="date" name="due_date">
+        <br><br>
+        <label>Priority</label>
+        <br>
+        <select name="priority">
+            <option>High</option>
+            <option>Medium</option>
+            <option>Low</option>
+        </select>
+        <br><br>
+        <button>Add Task</button>
+    </form>
+</body>
+</html>

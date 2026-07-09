@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Edit Task</title>
+    </head>
+    <body>
+        <h2>Edit Task</h2>
+        <form method="POST">
+            <label>Title</label><br>
+            <input type="text" name="title" value="{{ task.title }}" required>
+            <br><br>
+            <label>Description</label><br>
+            <textarea name="description">{{ task.description }}</textarea>
+            <br><br>
+            <label>Due Date</label><br>
+            <input type="date" name="due_date" value="{{ task.due_date }}">
+            <br><br>
+            <label>Priority</label><br>
+            <select name="priority">
+                <option value="High" {% if task.priority=="High" %}selected{% endif %}>High</option>
+                <option value="Medium" {% if task.priority=="Medium" %}selected{% endif %}>Medium</option>
+                <option value="Low" {% if task.priority=="Low" %}selected{% endif %}>Low</option>
+            </select>
+            <br><br>
+            <button>Update Task</button>
+        </form>
+    </body>
+</html>

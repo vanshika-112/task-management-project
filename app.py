@@ -27,7 +27,6 @@ def register():
         username = request.form["username"]
         password = request.form["password"]
 
-        # Check if username already exists
         existing_user = User.query.filter_by(username=username).first()
 
         if existing_user:
@@ -74,10 +73,107 @@ def dashboard():
     if "user_id" not in session:
         return redirect("/login")
 
+    tasks = Task.query.filter_by(user_id=session["user_id"]).all()
+
+    total_tasks = len(tasks)
+    completed_tasks = len([task for task in tasks if task.status == "Completed"])
+    pending_tasks = total_tasks - completed_tasks
+
     return render_template(
         "dashboard.html",
-        username=session["username"]
+        username=session["username"],
+        tasks=tasks,
+        total_tasks=total_tasks,
+        completed_tasks=completed_tasks,
+        pending_tasks=pending_tasks
     )
+
+@app.route("/add_task", methods=["GET", "POST"])
+def add_task():
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    if request.method == "POST":
+
+        new_task = Task(
+            title=request.form["title"],
+            description=request.form["description"],
+            due_date=request.form["due_date"],
+            priority=request.form["priority"],
+            user_id=session["user_id"]
+        )
+
+        db.session.add(new_task)
+        db.session.commit()
+
+        return redirect("/dashboard")
+
+    return render_template("add_task.html")
+
+@app.route("/delete_task/<int:id>")
+def delete_task(id):
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    task = Task.query.get_or_404(id)
+
+    if task.user_id != session["user_id"]:
+        return "Unauthorized"
+
+    db.session.delete(task)
+    db.session.commit()
+
+    return redirect("/dashboard")
+
+@app.route("/complete_task/<int:id>")
+def complete_task(id):
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    task = Task.query.get_or_404(id)
+
+    if task.user_id != session["user_id"]:
+        return "Unauthorized"
+
+    task.status = "Completed"
+
+    db.session.commit()
+
+    return redirect("/dashboard")
+
+@app.route("/edit_task/<int:id>", methods=["GET", "POST"])
+def edit_task(id):
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    task = Task.query.get_or_404(id)
+
+    if task.user_id != session["user_id"]:
+        return "Unauthorized"
+
+    if request.method == "POST":
+
+        task.title = request.form["title"]
+        task.description = request.form["description"]
+        task.due_date = request.form["due_date"]
+        task.priority = request.form["priority"]
+
+        db.session.commit()
+
+        return redirect("/dashboard")
+
+    return render_template("edit_task.html", task=task)
+
+@app.route("/logout")
+def logout():
+
+    session.clear()
+
+    return redirect("/")
 
 if __name__ == "__main__":
     app.run(debug=True)

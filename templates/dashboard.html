@@ -4,9 +4,37 @@
     <title>Dashboard</title>
 </head>
 <body>
-    <h1>Welcome, {{ username }}!</h1>
-    <h3>Your Dashboard</h3>
-    <p>You have successfully logged in.</p>
+    <h1>Welcome, {{ username }}</h1>
+    <a href="/add_task">+ Add Task</a> |
     <a href="/logout">Logout</a>
+    <hr>
+
+    <h3>Statistics</h3>
+
+    <p>Total Tasks: {{ total_tasks }}</p>
+    <p>Pending: {{ pending_tasks }}</p>
+    <p>Completed: {{ completed_tasks }}</p>
+
+    <hr>
+
+    <h2>My Tasks</h2>
+    {% if tasks %}
+        {% for task in tasks %}
+            <div style="border:1px solid gray; padding:15px; margin-bottom:15px;">
+                <h3>{{ task.title }}</h3>
+                <p>{{ task.description }}</p>
+                <p><b>Due:</b> {{ task.due_date }}</p>
+                <p><b>Priority:</b> {{ task.priority }}</p>
+                <p><b>Status:</b> {{ task.status }}</p>
+                    <a href="/edit_task/{{ task.id }}">Edit</a>|
+                    <a href="/delete_task/{{ task.id }}">Delete</a>|
+                    {% if task.status == "Pending" %}
+                    <a href="/complete_task/{{ task.id }}">Complete</a>
+                    {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+    <p>No tasks yet.</p>
+    {% endif %}
 </body>
 </html>
