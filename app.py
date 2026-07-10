@@ -14,7 +14,6 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
-
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -170,9 +169,7 @@ def edit_task(id):
 
 @app.route("/logout")
 def logout():
-
     session.clear()
-
     return redirect("/")
 
 if __name__ == "__main__":

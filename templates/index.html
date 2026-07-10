@@ -1,18 +1,69 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Task Manager</title>
-</head>
+{% extends "base.html" %}
 
-<body>
-    <h1>Task Management System</h1>
-    <p>Organize your work easily.</p>
-    <a href="/login">
-        Login
-    </a>
-    <br><br>
-    <a href="/register">
-        Register
-    </a>
-</body>
-</html>
+{% block title %}
+Task Manager
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+
+    <div class="hero-content">
+
+        <h1>Organize Your Tasks with <span>TaskFlow</span></h1>
+
+        <p>
+            A simple and efficient task management application built with
+            Flask. Stay organized, track your progress, and boost your
+            productivity.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="{{ url_for('login') }}" class="btn-primary">
+                Login
+            </a>
+
+            <a href="{{ url_for('register') }}" class="btn-secondary">
+                Register
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="features">
+
+    <div class="feature-card">
+
+        <h2>📝 Manage Tasks</h2>
+
+        <p>
+            Create, edit, and delete tasks easily from your dashboard.
+        </p>
+
+    </div>
+
+    <div class="feature-card">
+
+        <h2>📊 Track Progress</h2>
+
+        <p>
+            View total, pending, and completed tasks at a glance.
+        </p>
+
+    </div>
+
+    <div class="feature-card">
+
+        <h2>🔒 Secure Login</h2>
+
+        <p>
+            Passwords are securely hashed to protect user accounts.
+        </p>
+
+    </div>
+
+</section>
+{% endblock %}

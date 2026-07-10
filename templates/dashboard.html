@@ -1,40 +1,104 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Dashboard</title>
-</head>
-<body>
-    <h1>Welcome, {{ username }}</h1>
-    <a href="/add_task">+ Add Task</a> |
-    <a href="/logout">Logout</a>
-    <hr>
+{% extends "base.html" %}
 
-    <h3>Statistics</h3>
+{% block title %}
+    Dashboard
+{% endblock %}
 
-    <p>Total Tasks: {{ total_tasks }}</p>
-    <p>Pending: {{ pending_tasks }}</p>
-    <p>Completed: {{ completed_tasks }}</p>
+{% block content %}
 
-    <hr>
+<div class="dashboard-header">
 
-    <h2>My Tasks</h2>
-    {% if tasks %}
-        {% for task in tasks %}
-            <div style="border:1px solid gray; padding:15px; margin-bottom:15px;">
-                <h3>{{ task.title }}</h3>
-                <p>{{ task.description }}</p>
-                <p><b>Due:</b> {{ task.due_date }}</p>
-                <p><b>Priority:</b> {{ task.priority }}</p>
-                <p><b>Status:</b> {{ task.status }}</p>
-                    <a href="/edit_task/{{ task.id }}">Edit</a>|
-                    <a href="/delete_task/{{ task.id }}">Delete</a>|
-                    {% if task.status == "Pending" %}
-                    <a href="/complete_task/{{ task.id }}">Complete</a>
-                    {% endif %}
-            </div>
-        {% endfor %}
-    {% else %}
-    <p>No tasks yet.</p>
-    {% endif %}
-</body>
-</html>
+    <div>
+        <h1>Hello, {{ username }}!</h1>
+        <p>Manage your daily tasks efficiently.</p>
+    </div>
+
+    <a href="{{ url_for('add_task') }}" class="add-btn">
+        + Add Task
+    </a>
+
+</div>
+
+<div class="stats">
+
+    <div class="card">
+        <h3>Total Tasks</h3>
+        <h1>{{ total_tasks }}</h1>
+    </div>
+
+    <div class="card">
+        <h3>Pending</h3>
+        <h1>{{ pending_tasks }}</h1>
+    </div>
+
+    <div class="card">
+        <h3>Completed</h3>
+        <h1>{{ completed_tasks }}</h1>
+    </div>
+
+</div>
+
+<h2 class="section-title">My Tasks</h2>
+
+{% if tasks %}
+
+    {% for task in tasks %}
+
+    <div class="task-card">
+
+        <div class="task-top">
+
+            <h2>{{ task.title }}</h2>
+
+            <span class="status {{ task.status|lower }}">
+                {{ task.status }}
+            </span>
+
+        </div>
+
+        <p>{{ task.description }}</p>
+
+        <div class="task-info">
+
+            <span> {{ task.due_date }}</span>
+
+            <span class="priority {{ task.priority|lower }}">
+                {{ task.priority }}
+            </span>
+
+        </div>
+
+        <div class="task-buttons">
+
+            <a href="{{ url_for('edit_task', id=task.id) }}">Edit</a>
+
+            <a href="{{ url_for('delete_task', id=task.id) }}"
+               onclick="return confirm('Delete this task?')">
+               Delete
+            </a>
+
+            {% if task.status=="Pending" %}
+            <a href="{{ url_for('complete_task', id=task.id) }}">
+                Complete
+            </a>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+{% else %}
+
+<div class="empty-state">
+
+    <h2>No Tasks Yet</h2>
+
+    <p>Click "Add Task" to create your first task.</p>
+
+</div>
+
+{% endif %}
+
+{% endblock %}
