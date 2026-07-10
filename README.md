@@ -49,7 +49,3 @@ http://127.0.0.1:5000
 * Search & Filter Tasks
 * Email Reminders
 * Dark Mode
-
-## Author
-
-**Vanshika**
